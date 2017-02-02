@@ -1,0 +1,35 @@
+food {
+  tracker {
+    < {
+      ngRoute   :angular-route
+    }
+
+    # {
+      main {
+        search-box {
+          search-input {
+            search-results
+          }
+          frequent-results
+          category-view
+        }
+        tracker-box {
+          recent-food
+          nutrient-display {
+            nutrient-item
+          }
+        }
+      }
+    }
+
+    | {
+      timeAgo
+    }
+
+    > {
+      '/': main
+    }
+
+    config
+  }
+}
