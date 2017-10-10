@@ -1,32 +1,39 @@
-module.exports = () => ({
+module.exports = ['data', '$timeout', (data, $timeout) => ({
   restrict: 'E',
   template: require('./template.html'),
   controller: ['$scope', $scope => {
     $scope.searchQuery = '';
     $scope.results = [];
 
-    $scope.$watch('searchQuery', value => {
+    $scope.$watch('searchQuery', queryChanged);
+
+    const debouncedSearch = debounce(search, 500);
+
+    function queryChanged(query) {
+      debouncedSearch(query);
+    }
+
+    function search(query) {
       $scope.results.splice(0);
 
-      FOOD.forEach(food => {
-        if (food.longDescription.match(new RegExp(`.*${value}.*`, 'gi'))) {
+      data.FOOD.forEach(food => {
+        if (food[2].match(new RegExp(`.*${query}.*`, 'gi'))) {
           $scope.results.push(food);
         }
       });
 
-      console.log($scope.results);
-    });
-  }]
-});
+      $scope.results.sort((a, b) => a[2].length > b[2].length ? 1 : -1);
 
-const FOOD = [
-  {
-    ndbNo: '11124',
-    longDescription: 'Carrots, raw',
-    shortDescription: 'CARROTS,RAW'
-  },{
-    ndbNo: '11125',
-    longDescription: 'Carrots, cooked, boiled, drained, without salt',
-    shortDescription: 'CARROTS,CKD,BLD,DRND,WO/SALT'
-  }
-];
+      console.log('results', $scope.results);
+    }
+
+    function debounce(fn, time) {
+      let timer;
+      return (...args) => {
+        if (timer) $timeout.cancel(timer);
+
+        timer = $timeout(fn, time, true, ...args);
+      };
+    }
+  }]
+})];

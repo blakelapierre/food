@@ -2,21 +2,37 @@ module.exports = () => ({
   restrict: 'E',
   template: require('./template.html'),
   controller: ['$scope', $scope => {
-    const maxFrequentResults = 5;
+    const maxFrequentResults = 5,
+          maxRecentTime = 24 * 60 * 60 * 1000;
 
     $scope.recentFood = [];
     $scope.foodCounts = {};
-    const frequentResults = $scope.frequentResults = [];
+    $scope.frequentResults = [];
+
+    const {recentFood, foodCounts, frequentResults} = $scope;
 
     $scope.addFood = food => {
-      $scope.recentFood.push({food, quantity: getDefaultQuantity(food), time: new Date()});
-      const count = $scope.foodCounts[food.ndbNo] = ($scope.foodCounts[food.ndbNo] || 0) + 1;
+      recentFood.push({food, quantity: getDefaultQuantity(food), time: new Date().getTime()});
+
+      for (let i = recentFood.length - 1; i >= 0; i--) {
+        if (new Date().getTime() - recentFood[i].time > maxRecentTime) recentFood.splice(i, 1);
+      }
+
+      const count = foodCounts[food[0]] = (foodCounts[food[0]] || 0) + 1;
 
       let inserted;
-      for (let i = 0; i < maxFrequentResults.length; i++) {
+      for (let i = 0; i < frequentResults.length; i++) {
         const result = frequentResults[i];
-        if (count > result[0]) {
-          frequentResults.splice(i, 0, [count, food]);
+        if (result.food === food) {
+          result.count = count;
+          return;
+        }
+      }
+
+      for (let i = 0; i < frequentResults.length; i++) {
+        const result = frequentResults[i];
+        if (count > result.count && result.food !== food) {
+          frequentResults.splice(i, 0, {count, food});
           inserted = true;
 
           if (frequentResults.length > maxFrequentResults) frequentResults.splice(frequentResults.length - 1, 1);
@@ -25,7 +41,7 @@ module.exports = () => ({
       }
 
       if (!inserted && frequentResults.length < maxFrequentResults) {
-        frequentResults.push([count, food]);
+        frequentResults.push({count, food});
       }
     };
   }]

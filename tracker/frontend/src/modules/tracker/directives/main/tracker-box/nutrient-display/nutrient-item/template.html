@@ -1,1 +1,2 @@
-{{nutrient.description}}
+<div class="amount" ng-style="{'right': 100 - ((getTotalNutrientQuantity(nutrient[0]) / getNutrientRda(nutrient[0])) * 100) + '%'}"></div>
+<span>{{nutrient[3]}} ({{nutrient[1]}})</span> <span>{{getTotalNutrientQuantity(nutrient[0])}} / {{getNutrientRda(nutrient[0])}}</span>

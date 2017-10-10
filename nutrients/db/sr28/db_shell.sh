@@ -8,4 +8,5 @@ POSTGRES_DATABASE=usda
 
 docker run --rm -it \
           --link postgres-usda \
+          -v $(pwd)/nut_data:/nut_data:z \
          postgres:9.5 /bin/bash -c "psql -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -d $POSTGRES_DATABASE"

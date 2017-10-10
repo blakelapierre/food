@@ -1,1 +1,1 @@
-<div ng-repeat="result in frequentResults">{{result[1].longDescription}}</div>
+<div ng-repeat="result in frequentResults | orderBy : 'count' : true">{{result.food[2]}} {{result.count}}</div>

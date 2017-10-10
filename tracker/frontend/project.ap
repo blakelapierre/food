@@ -11,6 +11,7 @@ food {
             search-results
           }
           frequent-results
+          inventory-view
           category-view
         }
         tracker-box {
@@ -20,6 +21,10 @@ food {
           }
         }
       }
+    }
+
+    ^ {
+      data
     }
 
     | {

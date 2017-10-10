@@ -1,0 +1,14 @@
+DROP FUNCTION IF EXISTS "sr28"."extract_nut_data"();
+
+CREATE FUNCTION "sr28"."extract_nut_data" ()
+RETURNS VOID AS $$
+DECLARE
+  food RECORD;
+  fileName TEXT;
+BEGIN
+  FOR food in SELECT "NDB_No" FROM "sr28"."FOOD_DES" LOOP
+    fileName := '/nut_data/' || food."NDB_No";
+    EXECUTE 'COPY (SELECT json_build_array("NDB_No", "Nutr_No", "Nutr_Val", "Num_Data_Pts", "Std_Error", "Src_Cd", "Deriv_Cd", "Ref_NDB_No", "Add_Nutr_Mark", "Num_Studies", "Min", "Max", "DF", "Low_EB", "Up_EB", "Stat_cmt", "AddMod_Date", "CC") FROM "sr28"."NUT_DATA" WHERE "NDB_No" = ''' || food."NDB_No" || ''') TO ''' || fileName || '''';
+  END LOOP;
+END;
+$$ LANGUAGE plpgsql;
