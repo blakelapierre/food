@@ -1,3 +1,5 @@
-api
-nutrients/db/sr28/data
-nutrients/db/sr28/nut_data
+node_modules
+.dev
+.rev
+.dist
+.tmp

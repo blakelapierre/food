@@ -1,6 +1,5 @@
 const {dependencies} = require('./package.json'),
       gulp = require('gulp'),
-      angularProject = require('angular_project').api,
       multipipe = require('multipipe'),
       fs = require('fs'),
       path = require('path'),
@@ -39,10 +38,6 @@ if (typeof result === 'string') console.log(result);
 
 let p = name => print(file => console.log(name, file));
 
-const ap = directory => through.obj(function(file, enc, cb) {
-  return angularProject(file.contents.toString(), '.').then(() => cb(), e => { console.log('AngularProject Error!', e); this.emit('error', e); });
-}, cb => cb());
-
 gulp.task('default', ['build']);
 
 gulp.task('build', sequence(['clean:rev', 'clean:dist'],
@@ -54,11 +49,9 @@ gulp.task('dev', cb => {
   const {src} = paths;
 
   sequence('clean:dev',
-          'project',
           ['js:vendor', 'js:app', 'html', 'images', 'styles', 'fonts'],
           'browser-sync')(cb);
 
-  gulp.watch(paths.project, ['project']);
   gulp.watch(src.vendor,    ['js:vendor']);
   gulp.watch(src.scripts,   ['js:app']);
   gulp.watch(src.templates, ['js:app']);
@@ -72,13 +65,6 @@ gulp.task('dev', cb => {
         }
       });
 });
-
-gulp.task('project',
-  () => pipe([
-      gulp.src(paths.project)
-      ,p('project')
-      ,ap()
-    ]));
 
 gulp.task('browser-sync',
   () => browserSync({
@@ -234,15 +220,14 @@ gulp.task('rev',
 ))('clean');
 
 const paths = {
-  project: './project.ap',
   src: {
     $: './src',
     app: ['./src/app.js'],
     less: ['src/**/*.less'],
     html: ['./src/index.html'],
     images: ['./src/**/*.{svg,gif,png,jpg}'],
-    scripts: ['./src/**/*.js'],
-    templates: ['./src/modules/**/template.html'],
+    scripts: ['src/**/*.js'],
+    templates: ['src/modules/**/template.html'],
     vendor: ['!./node_modules/*/node_modules/**']
             .concat(_.map(dependencies, (version, dependency) => { return `./node_modules/${dependency}/**/*.js`; } )),
   },
