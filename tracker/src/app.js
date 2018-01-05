@@ -67,14 +67,14 @@ const NutrientRow = ({items, nutrientName, units}, {foods, info}) => (
   // jshint ignore:start
   <tr>
     <td>{nutrientName} ({units})</td>
-    <td className="value"><Bar value={Array.prototype.reduce.call(items, (sum, item) => sum + foods[item.name].nutrients[nutrientName].per100g, 0) / (info.dri.male['31-50y'][nutrientName] || {value: 1}).value} /></td>
+    <td className="value"><Bar value={Array.prototype.reduce.call(items, (sum, item) => sum + foods[item.name].nutrients[nutrientName].per100g, 0) / (info.dri.male['31-50y'][nutrientName] || {value: 1}).value} title={`${Array.prototype.reduce.call(items, (sum, item) => sum + foods[item.name].nutrients[nutrientName].per100g, 0)} ${info.nutrients[nutrientName].units}`} /></td>
   </tr>
   // jshint ignore:end
 );
 
-const Bar = ({value}) => (
+const Bar = ({value, title}) => (
   // jshint ignore:start
-  <bar style={{'width': `${value * 100}%`}}>&nbsp;</bar>
+  <bar style={{'width': `${value * 100}%`}} title={title}>&nbsp;</bar>
   // jshint ignore:end
 );
 
@@ -82,7 +82,7 @@ const SideBySide = ({tracker, info}) => (
   // jshint ignore:start
   <side-by-side>
     <Tracker tracker={tracker} />
-    <InfoTable items={tracker.items} info={info} />
+    {tracker.items.length > 0 ? <InfoTable items={tracker.items} info={info} /> : undefined}
   </side-by-side>
   // jshint ignore:end
 );
