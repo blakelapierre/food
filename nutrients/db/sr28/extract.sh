@@ -28,9 +28,9 @@ copy() {
                postgres /bin/bash -c "$COMMAND"
 }
 
-copy 'SELECT json_build_array(\"NDB_No\", \"FdGrp_Cd\", \"Long_Desc\", \"Short_Desc\", \"SciName\") FROM \"sr28\".\"FOOD_DES\" WHERE \"FdGrp_Cd\" IN ('"'"'0200'"'"', '"'"'0400'"'"', '"'"'0800'"'"', '"'"'0900'"'"', '"'"'1100'"'"', '"'"'1200'"'"', '"'"'1600'"'"', '"'"'1900'"'"', '"'"'2000'"'"')' 'food_des/data.txt'
+copy 'SELECT json_build_array(\"NDB_No\", \"FdGrp_Cd\", \"Long_Desc\", \"Short_Desc\", \"SciName\") FROM \"sr28\".\"FOOD_DES\" WHERE \"FdGrp_Cd\" IN ('"'"'0200'"'"', '"'"'0400'"'"', '"'"'0800'"'"', '"'"'0900'"'"', '"'"'1100'"'"', '"'"'1200'"'"', '"'"'1600'"'"', '"'"'1900'"'"', '"'"'2000'"'"') ORDER BY \"FdGrp_Cd\", \"Long_Desc\"' 'food_des/data.txt'
 
-copy 'SELECT json_build_array(\"FdGrp_Cd\", \"FdGrp_Desc\") FROM \"sr28\".\"FD_GROUP\" WHERE \"FdGrp_Cd\" IN ('"'"'0200'"'"', '"'"'0400'"'"', '"'"'0800'"'"', '"'"'0900'"'"', '"'"'1100'"'"', '"'"'1200'"'"', '"'"'1600'"'"', '"'"'1900'"'"', '"'"'2000'"'"')' 'fd_group/data.txt'
+copy 'SELECT json_build_array(\"FdGrp_Cd\", \"FdGrp_Desc\") FROM \"sr28\".\"FD_GROUP\" WHERE \"FdGrp_Cd\" IN ('"'"'0200'"'"', '"'"'0400'"'"', '"'"'0800'"'"', '"'"'0900'"'"', '"'"'1100'"'"', '"'"'1200'"'"', '"'"'1600'"'"', '"'"'1900'"'"', '"'"'2000'"'"') ORDER BY \"FdGrp_Cd\"' 'fd_group/data.txt'
 
 # copy '\"sr28\".\"DATA_SRC\"' "sr28/DATA_SRC.txt" '\"DataSrc_ID\", \"Authors\", \"Title\", \"Year\", \"Journal\", \"Vol_City\", \"Issue_State\", \"Start_Page\", \"End_Page\"'
 # copy '\"sr28\".\"DATSRCLN\"' "sr28/DATSRCLN.txt" '\"NDB_No\", \"Nutr_No\", \"DataSrc_ID\"'
