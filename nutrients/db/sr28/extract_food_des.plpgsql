@@ -1,0 +1,13 @@
+DROP FUNCTION IF EXISTS "sr28"."extract_food_des"();
+
+CREATE FUNCTION "sr28"."extract_food_des" ()
+RETURNS VOID AS $$
+DECLARE
+  food RECORD;
+  fileName TEXT;
+BEGIN
+  fileName := '/jsondata/food_des/data.txt';
+
+  EXECUTE 'COPY (SELECT json_build_array("NDB_No", "FdGrp_Cd", "Long_Desc", "Short_Desc", "SciName") FROM "sr28"."FOOD_DES" WHERE "FdGrp_Cd" = ANY(''{0200, 0400, 0800, 0900, 1100, 1200, 1400, 1600, 1900, 2000, 2100, 2500}''::text[])) TO ''' || fileName || '''';
+END;
+$$ LANGUAGE plpgsql;

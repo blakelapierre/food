@@ -1,0 +1,13 @@
+DROP FUNCTION IF EXISTS "sr28"."extract_fd_group"();
+
+CREATE FUNCTION "sr28"."extract_fd_group" ()
+RETURNS VOID AS $$
+DECLARE
+  food RECORD;
+  fileName TEXT;
+BEGIN
+  fileName := '/jsondata/fd_group/data.txt';
+
+  EXECUTE 'COPY (SELECT json_build_array("FdGrp_Cd", "FdGrp_Desc") FROM "sr28"."FD_GROUP" WHERE "FdGrp_Cd" = ANY(''{0200, 0400, 0800, 0900, 1100, 1200, 1400, 1600, 1900, 2000, 2100, 2500}''::text[])) TO ''' || fileName || '''';
+END;
+$$ LANGUAGE plpgsql;
