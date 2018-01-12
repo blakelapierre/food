@@ -25,7 +25,7 @@ copy() {
      docker run --rm -it \
                 --link "$POSTGRES_HOST" \
                -v $(pwd)/data:/data:z \
-               postgres /bin/bash -c "$COMMAND"
+               postgres:alpine /bin/bash -c "$COMMAND"
 }
 
 copy '\"sr28\".\"DATA_SRC\"' "sr28/DATA_SRC.txt" '\"DataSrc_ID\", \"Authors\", \"Title\", \"Year\", \"Journal\", \"Vol_City\", \"Issue_State\", \"Start_Page\", \"End_Page\"'
