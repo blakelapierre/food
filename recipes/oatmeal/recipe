@@ -1,0 +1,24 @@
+
+[oatmeal] (simmer) {
+  oats
+
+  chia
+
+  flax
+
+  hemp
+
+  apple
+
+  grape->[dehydrate]->raisin
+
+  cinnamon
+
+  almond-cashew + pea protein milk
+
+  water
+} <serve> (warm) {
+  brown sugar
+
+  almond-cashew + pea protein milk
+}
